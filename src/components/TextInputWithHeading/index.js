@@ -23,29 +23,15 @@ const TextInputWithHeading =(
       ProfileTextInputText,
       textHeading,
       textPlaceHolder,
+      handleValidUser,
+      textInputChange,
+      data,
       ...props
     },
     ref
   ) => {
-    const [data, setData] = React.useState({
-      message: 'Maximum characters:50',
-      isValidUser: false,
-  });
-    const handleValidUser = (val) => {
-      
-      if( val.trim().length >= 20 ) {
-        console.log("Value=====>",val)
-          setData({
-              ...data,
-              isValidUser: true
-          });
-      } else {
-          setData({
-              ...data,
-              isValidUser: false
-          });
-      }
-  }
+    
+   
     return(
       <>
 <View style={[profileTextInputContainer]}>
@@ -61,15 +47,16 @@ const TextInputWithHeading =(
              placeholderTextColor={'#00035c'}
              style={{fontFamily:'Poppins-Medium'}}
              onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+             onChangeText={(val) => textInputChange(val)}
             // autoCapitalize="none"
-            // onChangeText={(val) => textInputChange(val)}
+            
             // onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
         />
         
    </View>
    { data.isValidUser && (
     <Animatable.View animation="fadeInLeft" duration={500} style={{alignItems:'flex-start',width:'85%',marginTop:10}}>
-    <Text style={{color:'#E4434E',fontFamily:'Poppins-Bold',fontSize:12}}>Maximum characters:50</Text>
+    <Text style={{color:'#E4434E',fontFamily:'Poppins-Bold',fontSize:12}}>{data.message}</Text>
     </Animatable.View>
            )
               

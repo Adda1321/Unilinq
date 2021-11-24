@@ -8,6 +8,7 @@ export default function index() {
     const navigation = useNavigation();
     return (
         <View style={styles.feedbackContainer}>
+            <View style={{flex:1}}>
             <TouchableOpacity style={styles.feedbackCrossButton} onPress={()=>navigation.goBack()}>
             <ImageView src={Images.cross} imageStyle={styles.feedbackCrossImageView}/>
             </TouchableOpacity>
@@ -40,6 +41,7 @@ export default function index() {
 <ImageView src={Images.short_right2x} imageStyle={styles.feedbackImageLeftArrow}/>
                </View>
            </View>
+            </View>
             </View>
             </View>
         </View>

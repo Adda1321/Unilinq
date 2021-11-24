@@ -1,4 +1,7 @@
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
  export const Images = {
    //HomeScreen Images
     homeIcon:require('../images/Home.png'),
@@ -55,16 +58,17 @@ export const Colors = {
     White: '#FFFFFF',
     Blue: '#0000FF',
     Black: '#000000',
-    Grey:'#b7b7b7'
+    Grey:'#b7b7b7',
+    light_grey:'#f3f3f4'
   };
   export const FontSizes={
-    huge:32,
-    larger:26,
-    large:18,
-    medium:17,
-    regular:14,
-    medium_regular:12,
-    small:10
+    huge:hp('4.44%'),
+    larger:hp('3.61%'),
+    large:hp('2.5%'),
+    medium:hp('2.36%'),
+    regular:hp('1.94%'),
+    medium_regular:hp('1.67%'),
+    small:hp('1.4%')
     
   }
   export const FontFamilies={

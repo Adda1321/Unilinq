@@ -10,7 +10,7 @@ import CategorySelectBottomSheet from './CategorySelectBottomSheet'
   const halfWidth = width / 2;
   import {connect} from 'react-redux';
   import {loginUser} from  '../../components/actions/index';
-
+import Communites  from '../../components/Communites'
  class index extends React.Component {
     constructor(props){
         super(props)
@@ -59,8 +59,11 @@ import CategorySelectBottomSheet from './CategorySelectBottomSheet'
     }
    
   componentDidMount(){
-    const chunkedElements = _.chunk(this.state.products, 10)
- console.log("Array======>",chunkedElements)
+    // const chunkedElements = _.chunk(this.state.products, 10)
+    
+    //  let pixels =10
+    //  let response = (pixels*100)/height
+    //  console.log("DataFont=====>",response)
     
   }
 
@@ -173,55 +176,7 @@ import CategorySelectBottomSheet from './CategorySelectBottomSheet'
                  
               
                       
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {this.state.products.map((product, index) => {
-              return (
-                <View style={{}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                     this.props.navigation.navigate('CommunityDetails',{image:product})
-                    }}
-                  >
-                    <Card
-                      style={styles.homeScreenCard}
-                    >
-                      <ImageBackground
-                        style={styles.homeScreenCardImage}
-                        source={product}
-                        resizeMode="stretch"
-                      >
-                        <View style={styles.homeScreenCardView}>
-                        <ImageView  src={Images.public}  imageStyle={{width:17,height:17}}  />
-                        <Text
-                          style={{color:'#000',marginLeft:5,fontSize: 10,
-                          
-                          fontFamily:'Poppins-SemiBold',textAlign:'center',paddingVertical:1}}
-                        >
-                        Public
-                        </Text> 
-                        
-                        </View>
-                        <View style={{position: "absolute",
-  bottom: 0,}}>
-                        <Text
-                          style={styles.homeScreenCardTextTwo}
-                        >
-                        Sports & Fitness
-                        </Text> 
-                        </View>
-                      </ImageBackground>
-                      
-                    </Card>
-                    <Text
-                          style={{color:'#B7B7B7',marginHorizontal:15,fontFamily:'Poppins-SemiBold',fontSize:14,marginTop:-4}}
-                        >
-                        MEL U AFL Fan
-                        </Text> 
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
+                 <Communites ProfilesData={this.state.products} categoryEnable={true} navigation={this.props.navigation}/>
 
         
     </View>
@@ -233,56 +188,7 @@ import CategorySelectBottomSheet from './CategorySelectBottomSheet'
                       <View style={{flex:1}}>
                  
               
-                      
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {this.state.products.map((product, index) => {
-              return (
-                <View style={{}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                     this.props.navigation.navigate('CommunityDetails',{image:product})
-                    }}
-                  >
-                    <Card
-                      style={styles.homeScreenCard}
-                    >
-                      <ImageBackground
-                        style={styles.homeScreenCardImage}
-                        source={product}
-                        resizeMode="stretch"
-                      >
-                        <View style={styles.homeScreenCardView}>
-                        <ImageView  src={Images.public}  imageStyle={{width:17,height:17}}  />
-                        <Text
-                          style={{color:'#000',marginLeft:5,fontSize: 10,
-                          
-                          fontFamily:'Poppins-SemiBold',textAlign:'center',paddingVertical:1}}
-                        >
-                        Public
-                        </Text> 
-                        
-                        </View>
-                        <View style={{position: "absolute",
-  bottom: 0,}}>
-                        <Text
-                          style={styles.homeScreenCardTextTwo}
-                        >
-                        Sports & Fitness
-                        </Text> 
-                        </View>
-                      </ImageBackground>
-                      
-                    </Card>
-                    <Text
-                          style={{color:'#B7B7B7',marginHorizontal:15,fontFamily:'Poppins-SemiBold',fontSize:14,marginTop:-4}}
-                        >
-                        MEL U AFL Fan
-                        </Text> 
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
+                 <Communites ProfilesData={this.state.products} categoryEnable={true} navigation={this.props.navigation}/>
 
         
     </View>

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import {Image} from 'react-native'
 
 const ImageView = ({ src, imageStyle,Color }) => {
   return (
-    <FastImage
+    <Image
       style={[imageStyle]}
       source={src}
       tintColor={Color}

@@ -8,6 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 import TextInputWithHeading from '../../components/TextInputWithHeading'
 export default function index() {
     const navigation = useNavigation();
+    const [data, setData] = React.useState({
+        message: 'Maximum characters:20',
+        isValidUser: false,
+    });
     const CommunityArray=[
         'MCU Gaming Union',
         'BHS Code',
@@ -15,6 +19,25 @@ export default function index() {
         'Bachelor of Design'
 
     ]
+    const handleValidUser = (val) => {
+      
+        if( val.trim().length >= 20 ) {
+          console.log("Value=====>",val)
+            setData({
+                ...data,
+                isValidUser: true
+            });
+        } else {
+            setData({
+                ...data,
+                isValidUser: false
+            });
+        }
+    }
+    const changeText=(txt)=>{
+        console.log("Data========>ok",txt)
+        setBioText(txt)
+      }
     return (
         <View style={{flex:1,backgroundColor:'#fff'}}>
          <ScrollView >
@@ -38,7 +61,7 @@ export default function index() {
                 <ImageView src={Images.chat} imageStyle={styles.userProfileChatIcon} />
                 <Text style={styles.userProfileChatText}>Direct Message</Text>
             </View>
-            <TextInputWithHeading profileTextInputContainer={[styles.profileTextInputContainer]}  ProfileTextInputText={[styles.ProfileTextInputText]} textHeading=" Bio"  textPlaceHolder="Jesus stole my wheel... just saying" />
+            <TextInputWithHeading profileTextInputContainer={[styles.profileTextInputContainer]}  ProfileTextInputText={[styles.ProfileTextInputText]} textHeading=" Bio"  textPlaceHolder="Jesus stole my wheel... just saying" handleValidUser={(val)=>handleValidUser(val)} data={data} textInputChange={(txt)=>changeText(txt)} />
             <View style={styles.userProfileCommunityContainer}>
                 <Text style={styles.userProfileCommunityHeaderText}>5 communities</Text>
             <View>

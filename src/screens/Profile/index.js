@@ -13,6 +13,11 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 export default function index() {
     const navigation = useNavigation();
     const [capturedImage, setCapturedImage] = useState('');
+    const [bioText,setBioText] = useState('')
+    const [data, setData] = React.useState({
+      message: 'Maximum characters:20',
+      isValidUser: false,
+  });
     let imageOptionsSelect;
     const requestPermissionForAndroid = async () => {
         const permisssion = await PermissionsAndroid.request(
@@ -20,7 +25,21 @@ export default function index() {
         );
         return permisssion;
       };
-    
+      const handleValidUser = (val) => {
+      
+        if( val.trim().length >= 20 ) {
+          console.log("Value=====>",val)
+            setData({
+                ...data,
+                isValidUser: true
+            });
+        } else {
+            setData({
+                ...data,
+                isValidUser: false
+            });
+        }
+    }
       const onPictureCapture = async () => {
           console.log("Capture")
         let permisssion = await requestPermissionForAndroid();
@@ -53,6 +72,24 @@ export default function index() {
       }
       
     };
+    const updateBio = () => {
+      if( bioText.trim().length < 10 ) {
+        // console.log("Value=====>",val)
+          setData({
+              message:'Minimum characters:10',
+              isValidUser: true
+          });
+      } else {
+          setData({
+              ...data,
+              isValidUser: false
+          });
+      }
+    }
+    const changeText=(txt)=>{
+      console.log("Data========>ok",txt)
+      setBioText(txt)
+    }
       console.log("CaptureImage====>",JSON.stringify(capturedImage[0]?.path) )
     return (
         <View style={[styles.profileContainer,]}>
@@ -94,13 +131,13 @@ export default function index() {
                     <ImageView src={Images.email} imageStyle={styles.profileEmailImage}/>
                     <Text style={styles.profileEmailText}>anders@swin.edu.au</Text>
                 </View>
-          <TextInputWithHeading profileTextInputContainer={[styles.profileTextInputContainer]}  ProfileTextInputText={[styles.ProfileTextInputText]} textHeading="Your Bio"  textPlaceHolder="Enter bio here" />
+          <TextInputWithHeading profileTextInputContainer={[styles.profileTextInputContainer]}  ProfileTextInputText={[styles.ProfileTextInputText]} textHeading="Your Bio"  textPlaceHolder="Enter bio here" handleValidUser={(val)=>handleValidUser(val)} data={data} textInputChange={(txt)=>changeText(txt)} />
            
             </View>
-            <View style={styles.profileUpdateInfoContainer}>
+            <TouchableOpacity style={styles.profileUpdateInfoContainer} onPress={()=>updateBio()}>
                 <Text style={styles.profileUpdateInfoText}>Update Bio</Text>
                 <ImageView src={Images.short_right2x} imageStyle={styles.profileUpdateInfoImage}/>
-            </View>
+            </TouchableOpacity>
             </View>
            <View>
                <Text style={{color:'#E0E0E0',fontFamily:'Poppins-Bold',fontSize:28,textAlign:'center',marginTop:10}}>FeedBack</Text>
