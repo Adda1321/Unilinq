@@ -1,15 +1,26 @@
 import React,{useState} from 'react'
-import { View, Text,TextInput,TouchableOpacity ,StyleSheet,ScrollView } from 'react-native'
+import { View, Text,TextInput,SafeAreaView,TouchableOpacity ,StyleSheet,ScrollView } from 'react-native'
 import ImageView from '../../components/Image'
 import { Images } from '../../utils'
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from '@react-native-community/checkbox';
+import { CheckBox } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {appStyles} from '../../style'
+import SimpleTextInput from '../../components/SimpleInput';
 export default function index() {
     const [isSelected, setSelection] = useState(false);
     const navigation = useNavigation();
     return (
-        <View style={styles.reportMemberContainer}>
+        <SafeAreaView style={[styles.feedbackContainer,{padding:10}]}>
+        <View style={{flex:1,backgroundColor:'#fff',shadowColor: '#000',
+shadowOffset: {
+  width: 0,
+  height: 3,
+},
+shadowOpacity:Platform.OS === 'ios' ? 0.10: 0.29,
+shadowRadius: 4.65,
+
+elevation: 7,borderTopRightRadius:40}}>
             <ScrollView>
             <TouchableOpacity style={styles.reportMemberBackButton} onPress={()=>navigation.goBack()}>
             <ImageView src={Images.cross} imageStyle={styles.reportMemberBackImage}/>
@@ -18,42 +29,38 @@ export default function index() {
             <View style={styles.reportMemberHeader}>
             <Text style={styles.reportMemberHeaderText}>Report Member</Text>
            <View style={styles.reportMemberCheckboxContainer}>
-            <CheckBox
-        value={isSelected}
-        onValueChange={setSelection}
-        tintColors={{ true: '#F15927', false: '#B7B7B7' }}
-        
-      />
+           <CheckBox
+  containerStyle ={{backgroundColor: 'transparent'}}
+  checkedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-marked" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}
+  uncheckedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-blank" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}  
+  checked={false}
+//   onPress={(()=>handleChange(item.id))}
+/>
             <Text style={styles.reportMembetCheckboxText}>Report anonymously</Text>
             </View>
             <View style={styles.reportMemberCheckboxContainerTwo}>
             <CheckBox
-        value={isSelected}
-        onValueChange={setSelection}
-        tintColors={{ true: '#F15927', false: '#B7B7B7' }}
-       
-      />
+  containerStyle ={{backgroundColor: 'transparent'}}
+  checkedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-marked" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}
+  uncheckedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-blank" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}  
+  checked={false}
+//   onPress={(()=>handleChange(item.id))}
+/>
             <Text style={styles.reportMembetCheckboxText}>It’s okay to contact me</Text>
             </View>
-            <View style={[styles.settingTextInputContainerTop,{marginTop:25}]}>
-    
-    {/* <View style={styles.action}>
-        <FontAwesome 
-            name="user-o"
-            color={colors.text}
-            size={20}
-        /> */}
-        <TextInput 
-        placeholder={'Reason'}
-             placeholderTextColor={'#B7B7B7'}
-             style={{fontFamily:'Poppins-Medium'}}
-
-            // autoCapitalize="none"
-            // onChangeText={(val) => textInputChange(val)}
-            // onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-        />
+           
+   <View style={{ paddingTop: 5}}>
        
-   </View>
+
+          <SimpleTextInput
+            inputStyle={styles.settingTextInputContainerTop}
+            placeholder={'Reason'}
+            handleValidUser={(val, data) => console.log("Ddd",val, data)}
+            data={'lastName'}
+            textInputChange={txt => console.log("Ddd",txt)}
+          />
+         
+        </View>
    <TouchableOpacity style={styles.reportMemberUploadImageContainer}>
         <View style={styles.reportMemberImageInnerContainer}>
                <View >
@@ -76,7 +83,7 @@ export default function index() {
                 please mention the community chat name."
                      placeholderTextColor={'#00035c'}
                      style={styles.reportMemberMessageInput}
-                     
+                     selectionColor={'black'}
                       multiline={true}
                       numberOfLines={5}
                     // autoCapitalize="none"
@@ -102,7 +109,8 @@ export default function index() {
             </View>
             </View>
             </ScrollView>
-        </View>
+            </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create(appStyles)

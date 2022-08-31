@@ -1,21 +1,26 @@
 import React,{useState} from 'react'
-import { View, Text ,Dimensions,ScrollView } from 'react-native'
-import CheckBox from '@react-native-community/checkbox';
+import { View, Text ,Dimensions,ScrollView,Image } from 'react-native'
+// import CheckBox from '@react-native-community/checkbox';
 import {Images} from '../../utils'
 import {TouchableOpacity,FlatList} from 'react-native'
 import RBSheet from 'react-native-raw-bottom-sheet';
 import ImageView from '../../components/Image'
 import TextInputWithIcon from '../../components/TextInput';
 import {appStyles} from '../../style'
+import { CheckBox } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 const {width,height}  = Dimensions.get('window')
 export default function CategorySelectBottomSheet( {
   inputStyle,
   categoryName,
-  categoryColor
+  categoryColor,
+  multipleSelect,
+  Closed,
+  first
 }) {
     const [isSelected, setSelection] = useState(false);
     const [searchText , setSearchText] = useState('')
-  
+    const [check , setCheck] = useState(false)
     const [products, setProducts] = useState([
       { id: 1, txt: 'View All', isChecked: false },
       { id: 2, txt: 'Special Interest', isChecked: false },
@@ -36,21 +41,9 @@ export default function CategorySelectBottomSheet( {
       { id: 7, txt: 'Cultural & language', isChecked: false },
       { id: 8, txt: 'Other', isChecked: false },
     ]);
-    let categorySelect;
-    // const List=[
-    //     'View All',
-    //     'Special Interest',
-    //     'Sports & Games',
-    //     'Academic & Faculty',
-    //     'Spiritual & religious',
-    //     'Sports & games',
-    //     'Political & activicts',
-    //     'Cultural & language',
-    //     'Other'
-    // ]
-   
+    let categorySelect; 
     const filterInterest =(val)=>{
-      console.log("Data====>",val)
+      
       // let prod = products
       const newData = arrayholder.filter(item => {      
         const itemData = `${item.txt.toUpperCase()}`;
@@ -65,7 +58,11 @@ export default function CategorySelectBottomSheet( {
       setSearchText(val)
     }
     const handleChange = (id) => {
-      
+        if(multipleSelect ==false){
+            for (var i = 0; i < products.length; i++) {
+              products[i].isChecked = false;
+          }
+        }
         let temp = products.map((product) => {
         if (id === product.id) {
           return {...product, isChecked: !product.isChecked };
@@ -76,14 +73,56 @@ export default function CategorySelectBottomSheet( {
       });
       setProducts(temp);
     };
+    const handleSort = (txt,id) =>{
+      setCheck(false)
+      products[0].isChecked = false;
+     
+      if(multipleSelect ==true && id==1){
+        setCheck(false)
+        for (var i = 0; i < products.length; i++) {
+          products[i].isChecked = false;
+      }
+      }
+    let temp = products.map((product) => {
+    if (id === product.id) {
+       
+      var arr = {...product, isChecked: !product.isChecked };
+      
+      return arr
+       
+    }
+    else {
+      // setCheck(false)
+      return product;
+    }
+    
+  });
+  temp.map((item)=>{
+    if(item.isChecked == true){
+      console.log("ffff==============>",item.isChecked)
+      setCheck(true)
+    }
+  })
+  setProducts(temp);
+    }
+    // console.log("Check------->",check)
     return (
         <View style={appStyles.bottomSheetContainer}>
             <TouchableOpacity style={[appStyles.bottomSheetCategoryButton,inputStyle]} onPress={()=>categorySelect.open()}>
            <View style={appStyles.bottomSheetButtonContainer}>
-            <Text style={[appStyles.bottomSheetButtonText,categoryColor]}>{categoryName}</Text>
+           <View style={{width:'94%',flexDirection:'row',flexWrap:'wrap',paddingVertical:check == true ?10:0}}>
+             { check == true ? products.map((item)=>(
+               item.isChecked == true && (
+                
+                <View style={{backgroundColor:'#00035c',borderRadius:18,marginLeft:10,height:34,marginVertical:5,justifyContent:'center'}}>
+                <Text style={[appStyles.checkbottomSheetButtonText]}>{item.txt}</Text>
+               </View>
+               )
+             )) : <Text style={[appStyles.bottomSheetButtonText,categoryColor]}>{categoryName}</Text>}
+            </View>
             <View style={appStyles.bottomSheetIconContainer}>
-            <Text style={appStyles.bottomSheetIconText}>Any</Text>
-            <ImageView src={Images.downarrow} imageStyle={appStyles.bottomSheetIcon}  />
+            {/* <Text style={appStyles.bottomSheetIconText}>Any</Text> */}
+            <ImageView src={require('../../images/down2x.png')} imageStyle={appStyles.bottomSheetIcon}  />
             </View>
             </View>
             </TouchableOpacity>
@@ -97,9 +136,20 @@ export default function CategorySelectBottomSheet( {
           closeOnDragDown
           openDuration={500}
           height={height*0.7}
-        //   onClose={() => closeView()}
-        //   onOpen={openView}
-          customStyles={appStyles.bottomSheetMainStyle}
+          onClose={() => first==true ?Closed(products) : Closed(products)}
+        customStyles={{
+          wrapper: {
+            backgroundColor: '#00000000'
+          },
+          draggableIcon: {
+            backgroundColor: '#000'
+          },
+          container: {
+            // flex: 8,
+            borderRadius: 16,
+            backgroundColor:'#FFF'
+          }
+        }}
         >
              <View style={{flex:1,marginBottom:30}}>
               <TextInputWithIcon
@@ -121,6 +171,7 @@ export default function CategorySelectBottomSheet( {
               returnKeyLabel="next"
               returnKeyType="next"
               maxLength={20}
+              
             //   onSubmitEditing={() => {
             //     passRef.current?.focus();
             //   }}
@@ -128,22 +179,34 @@ export default function CategorySelectBottomSheet( {
             
             />
             <FlatList
-      data={products}
+      data={ first == true ?products : products.slice(1)}
       renderItem={({item,index})=>(
+        
           <ScrollView >
           <View style={[appStyles.flatListContainer]}>
-        <CheckBox
+          <CheckBox
+  containerStyle ={{backgroundColor: 'transparent'}}
+  checkedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-marked" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}
+  uncheckedIcon={<View style={{backgroundColor:'#b7b7b7',borderRadius:4}} ><Icon name="checkbox-blank" size={25} color={'#Efefef'} style={{margin:-2,padding:-2}} /></View>}  
+  checked={item.isChecked}
+  onPress={(()=>first==true ?handleSort(item.txt,item.id):handleChange(item.id))}
+/>
+        {/* <CheckBox
         value={item.isChecked}
         onValueChange={ ()=>handleChange(item.id)}
-        tintColors={{ true: '#B7B7B7', false: '#B7B7B7' }}
+        tintColors={{ true: '#B7B7B7', false: '#b7b7b7' }}
+        tintColor={'black'}
+        
         style={{marginBottom:15,marginLeft:5}}
-      />
-          <Text style={{color:'#B7B7B7',marginRight:15,marginBottom:15,fontFamily:'Poppins-Medium',}}>{item.txt}</Text>
+        boxType="square"
+      /> */}
+      
+          <Text style={{color:'#B7B7B7',marginRight:15,fontFamily:'Poppins-Medium'}}>{item.txt}</Text>
           </View>
           {index < products.length -1 && (
             <View
   style={{
-    borderBottomColor: '#B7B7B7',
+    borderBottomColor: '#Efefef',
     borderBottomWidth: 1,
     width:'92%',
     alignSelf:'center',

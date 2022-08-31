@@ -19,9 +19,9 @@ export default function CommunityCreate() {
                 </View>
             </ImageBackground>
             <View style={{paddingHorizontal:20,}}>
-            <Text style={{color:'#00035c',fontFamily:'Poppins-Bold',fontSize:40}}>Create New</Text>
+            <Text style={styles.communityNewTextHeader}>Create New</Text>
             <View style={{alignItems:'flex-end'}}>
-             <TouchableOpacity style={{backgroundColor:'#f3f3f4',width:'80%',paddingLeft:10,paddingTop:10,borderRadius:10}} onPress={()=>navigation.navigate('CommunityNew')}>
+             <TouchableOpacity style={{backgroundColor:'#f3f3f4',width:'80%',paddingLeft:13,paddingTop:13,borderRadius:12}} onPress={()=>navigation.navigate('CommunityNew')}>
             <Text style={{color:'#00035c',fontFamily:'Poppins-SemiBold',fontSize:18}}>New Community</Text>
             <View style={{alignItems:'flex-end',}}>
             <ImageView src={Images.messageheart} imageStyle={{ width:120,height:120,bottom:-20}} />

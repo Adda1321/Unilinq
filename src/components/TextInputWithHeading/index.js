@@ -26,6 +26,7 @@ const TextInputWithHeading =(
       handleValidUser,
       textInputChange,
       data,
+      val,
       ...props
     },
     ref
@@ -35,7 +36,7 @@ const TextInputWithHeading =(
     return(
       <>
 <View style={[profileTextInputContainer]}>
-    <Text style={[ProfileTextInputText]}>{textHeading}</Text>
+    <Text style={[ProfileTextInputText , ]}>{textHeading}</Text>
     {/* <View style={styles.action}>
         <FontAwesome 
             name="user-o"
@@ -45,11 +46,13 @@ const TextInputWithHeading =(
         <TextInput 
         placeholder={textPlaceHolder}
              placeholderTextColor={'#00035c'}
-             style={{fontFamily:'Poppins-Medium'}}
+             style={{fontFamily:'Poppins-Medium',fontWeight:'500' , color:"#000"}}
              onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
              onChangeText={(val) => textInputChange(val)}
+             value={val}
+             {...props}
             // autoCapitalize="none"
-            
+            selectionColor={'black'}
             // onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
         />
         

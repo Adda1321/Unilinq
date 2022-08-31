@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "1072608441825",
+    "firebase_url": "https://unilinq-4a786-default-rtdb.firebaseio.com",
+    "project_id": "unilinq-4a786",
+    "storage_bucket": "unilinq-4a786.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072608441825:android:9a72786f6d026417ea0ea0",
+        "android_client_info": {
+          "package_name": "com.unilinq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072608441825-enml9dnse3ihfsg0dnpmplm3qfs6orf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKy1LcjMNXgW8Ow95orWu58zNKG0LtOxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072608441825-enml9dnse3ihfsg0dnpmplm3qfs6orf7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1072608441825-rcnik4oa3qfsm4pg43nndq9pnssqga5n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.unilinq"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072608441825:android:5c2b3001ec4dca2eea0ea0",
+        "android_client_info": {
+          "package_name": "com.unilinq.uat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072608441825-enml9dnse3ihfsg0dnpmplm3qfs6orf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKy1LcjMNXgW8Ow95orWu58zNKG0LtOxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072608441825-enml9dnse3ihfsg0dnpmplm3qfs6orf7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1072608441825-rcnik4oa3qfsm4pg43nndq9pnssqga5n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.unilinq"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,53 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+Platform
 } from 'react-native';
-import {appStyles} from '../../style';
-import {Card} from 'react-native-shadow-cards';
+import { appStyles } from '../../style';
+import { Card } from 'react-native-shadow-cards';
 import ImageView from '../Image/index';
-import {Images} from '../../utils';
-const Communites = ({ProfilesData, categoryEnable, navigation}, ref) => {
+import { Images } from '../../utils';
+import LinearGradient from 'react-native-linear-gradient';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
+const CommunitesTemp = React.memo(({ ProfilesData, categoryEnable, navigation, homeStyle, cardStyle, colorText, topContainer }, ref) => {
+  const [imageLoad, setImageLoad] = useState(false)
   return (
-    <View style={styles.searchScreenCardContainer}>
-      {ProfilesData.map((product, index) => {
+    <View style={[topContainer]}>
+      {ProfilesData?.map((product, index) => {
         return (
+          product.status == 'Approved' && product.community_type == 'Study' && (
           <View style={{}}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CommunityDetails', {image: product});
-              }}>
-              <Card style={styles.homeScreenCard}>
+              // disabled
+              onPress={() => navigation.navigate('CommunityDetails', { data: product })}
+            >
+
+              <Card style={[homeStyle]}>
+                {imageLoad == false && (
+                  <ShimmerPlaceHolder LinearGradient={LinearGradient} style={[cardStyle, { position: 'absolute', zIndex: 100 }]} />
+                )}
                 <ImageBackground
-                  style={styles.homeScreenCardImage}
-                  source={product}
-                  resizeMode="stretch">
+                  style={cardStyle}
+                  source={{ uri: product.community_image }}
+                  resizeMode="cover"
+                  onLoadStart={() => Platform.OS === 'android' ? console.log("Ok") :setImageLoad(false)}
+                  onLoadEnd={() => setImageLoad(true)}
+                >
                   {categoryEnable && (
                     <>
                       <View style={styles.homeScreenCardView}>
-                        <ImageView
-                          src={Images.public}
-                          imageStyle={{width: 17, height: 17}}
-                        />
-                        <Text
-                          style={{
-                            color: '#000',
-                            marginLeft: 5,
-                            fontSize: 10,
+                        {product.community_status == 'Public' ?
+                          <ImageView
+                            src={Images.public}
+                            imageStyle={{ width: 15, height: 15 }}
+                          /> : <ImageView
+                            src={require('../../images/lock.png')}
+                            imageStyle={{ width: 12, height: 16 }}
+                          />}
 
-                            fontFamily: 'Poppins-SemiBold',
-                            textAlign: 'center',
-                            paddingVertical: 1,
-                          }}>
-                          Public
+                        <Text
+                          style={[styles.communityPublicText]}>
+                          {product.community_status}
                         </Text>
                       </View>
-                      <View style={{position: 'absolute', bottom: 0}}>
-                        <Text style={styles.homeScreenCardTextTwo}>
-                          Sports & Fitness
+                      <View style={styles.comhomeScreenCardView}>
+
+                        <Text
+                          style={styles.sportscommunityPublicText}>
+                          {product.category_id}
                         </Text>
                       </View>
                     </>
@@ -55,21 +67,16 @@ const Communites = ({ProfilesData, categoryEnable, navigation}, ref) => {
                 </ImageBackground>
               </Card>
               <Text
-                style={{
-                  color: '#B7B7B7',
-                  marginHorizontal: 15,
-                  fontFamily: 'Poppins-SemiBold',
-                  fontSize: 14,
-                  marginTop: -4,
-                }}>
-                MEL U AFL Fan
+                style={[colorText, styles.communityTextSearch]}>
+                {product.community_name}
               </Text>
             </TouchableOpacity>
           </View>
+          )
         );
       })}
     </View>
   );
-};
-export default Communites;
+});
+export default CommunitesTemp;
 const styles = StyleSheet.create(appStyles);

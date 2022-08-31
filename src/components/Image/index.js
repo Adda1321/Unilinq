@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import {Image} from 'react-native'
+import { Image } from 'react-native'
 
-const ImageView = ({ src, imageStyle,Color }) => {
+const ImageView = ({ src, imageStyle, Color, ...props }) => {
+
   return (
     <Image
-      style={[imageStyle]}
+      style={[imageStyle, { tintColor: Color }]}
       source={src}
-      tintColor={Color}
-      // {...props}
-      // tintColor="grey"
+      // tintColor={Color}
+      {...props}
+    // tintColor="grey"
     />
   );
 };

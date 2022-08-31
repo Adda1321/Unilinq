@@ -1,57 +1,299 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import {appStyles} from '../../style';
 import {Card} from 'react-native-shadow-cards';
-import ImageView from '../Image';
-import {Images} from '../../utils';
-const Events = ({ProfilesData}, ref) => {
+
+import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
+const isSameDate = (dateA, dateB) => {
+  return dateA.toISOString() === dateB.toISOString();
+};
+const Events = (
+  {
+    ProfilesData,
+    type,
+    searchEventsDetailshomeScreenCard,
+    searchDetailshomeScreenCardImage,
+    navigation,
+    date,
+    all,
+  },
+  ref,
+) => {
+  const [imageLoad, setImageLoad] = useState(false);
+  var count = false;
+
   return (
     <View>
-      {ProfilesData.map((product, index) => (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('CommunityDetails', {
-                image: product,
-              });
-            }}>
-            <Card style={styles.searchEventsDetailshomeScreenCard}>
-              <ImageBackground
-                style={styles.searchDetailshomeScreenCardImage}
-                source={product}
-                resizeMode="cover">
-                <View style={styles.communityDetailshomeScreenCardView}>
-                  {/* <ImageView  src={Images.public}  imageStyle={{width:15,height:15}}  /> */}
-                  <Text style={styles.communityDetailsCardImageText}>200+</Text>
-                  <Text style={styles.communityDetailsCardImageTextTwo}>
-                    attendees
+      {ProfilesData?.map((product, index) => {
+        //  ProfilesData[index].event_name === "Pending" ? null :(
+           
+        if (Platform.OS === 'android') {
+          var dataformat1 = ProfilesData[index]?.event_start_date;
+          var dataformat = moment(dataformat1, 'MM-DD-YYYY').format(
+            'MMM ddd DD',
+          );
+
+          if (dataformat != 'Invalid date') {
+            var myArray = dataformat.split(' ');
+            var weekday = myArray[0];
+            // console.log("myArray------------------------------------->",myArray);
+            // // var secondArray = myArray[1].split(' ');
+            var day = myArray[2];
+            var month = myArray[1];
+          } else if (dataformat == 'Invalid date') {
+            var dataformat = moment(dataformat1, 'YYYY-MM-DD').format(
+              'MMM ddd DD',
+            );
+            var myArray = dataformat.split(' ');
+            var weekday = myArray[0];
+            // console.log("myArray------------------------------------->",myArray);
+            // // var secondArray = myArray[1].split(' ');
+            var day = myArray[2];
+            var month = myArray[1];
+          } else {
+            var weekday = '';
+            var day = '';
+            var month = '';
+          }
+        } else {
+          var dataformat = moment(ProfilesData[index]?.event_start_date).format(
+            'llll',
+          );
+
+          var myArray = dataformat.split(',');
+          var weekday = myArray[0];
+          var secondArray = myArray[1].split(' ');
+          var day = secondArray[2];
+          var month = secondArray[1];
+        }
+
+        if (index != 0) {
+          if (
+            ProfilesData[index - 1]?.event_start_date ==
+            ProfilesData[index]?.event_start_date
+          ) {
+            // console.log(" DATE Rrrrr=======>?",  ProfilesData[index]?.event_start_date )
+            count = false;
+          } else {
+            count1 = false;
+            count = true;
+          }
+        } else {
+          count = true;
+        }
+//  ProfilesData[index].event_name === "Pending" ? null :(
+        return all == false && ProfilesData[index]?.status != "Pending"  && !product.community_id ? (
+          <View style={{marginTop: date == true ? 15 : 0}}>
+            {count == true && date && (
+              <View
+                style={{
+                  borderBottomColor: '#b7b7b7',
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  alignSelf: 'center',
+                  marginTop: 20,
+                }}
+              />
+            )}
+            {count == true && date && (
+              <View
+                style={{
+                  marginHorizontal: 20,
+                  marginTop: 8,
+                  marginBottom: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 32,
+                    color: '#00035c',
+                  }}>
+                  {day}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 12,
+                    color: '#b7b7b7',
+                    alignSelf: 'flex-end',
+                  }}>
+                  {month.substring(0, 3)}
+                  {' | '}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 12,
+                    color: '#b7b7b7',
+                    alignSelf: 'flex-end',
+                  }}>
+                  {weekday.substring(0, 3)}
+                </Text>
+              </View>
+            )}
+            <TouchableOpacity
+              // disabled
+              onPress={() => {
+                navigation.navigate('eventDetails', {data: product});
+              }}
+              style={{alignItems: 'center'}}>
+              <Card style={[searchEventsDetailshomeScreenCard]}>
+                {imageLoad == false && (
+                  <ShimmerPlaceHolder
+                    LinearGradient={LinearGradient}
+                    style={[
+                      searchDetailshomeScreenCardImage,
+                      {position: 'absolute', zIndex: 100},
+                    ]}
+                  />
+                )}
+                <ImageBackground
+                  style={[searchDetailshomeScreenCardImage]}
+                  source={{uri: product.event_image}}
+                  resizeMode="cover"
+                  onLoadStart={() =>
+                    Platform.OS === 'android'
+                      ? console.log('Ok')
+                      : setImageLoad(false)
+                  }
+                  onLoadEnd={() => setImageLoad(true)}>
+                  {product.number > 1 && (
+                    <View style={styles.communityDetailshomeScreenCardView}>
+                      {/* <ImageView  src={Images.public}  imageStyle={{width:15,height:15}}  /> */}
+                      <Text style={styles.communityDetailsCardImageText}>
+                        {product.number - 1}
+                      </Text>
+                      <Text style={styles.communityDetailsCardImageTextTwo}>
+                        attendees
+                      </Text>
+                    </View>
+                  )}
+                  <View style={styles.comhomeScreenCardView}>
+                    <Text style={styles.sportscommunityPublicText}>
+                      {product.event_category}
+                    </Text>
+                  </View>
+                </ImageBackground>
+              </Card>
+              <View style={{width: '100%'}}>
+                <Text style={[styles.communityDetailsCardImageDateText]}>
+                  {weekday}
+                  {','} {month} {day} {product.event_start_time}
+                </Text>
+                <Text style={styles.communityDetailsCardDetailsText}>
+                  {product.event_name}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          all == true && ProfilesData[index]?.status != "Pending"  &&  (
+            <View style={{marginTop: date == true ? 15 : 0}}>
+              {count == true && date && (
+                <View
+                  style={{
+                    borderBottomColor: '#b7b7b7',
+                    width: '100%',
+                    borderBottomWidth: 1,
+                    alignSelf: 'center',
+                    marginTop: 20,
+                  }}
+                />
+              )}
+              {count == true && date && (
+                <View
+                  style={{
+                    marginHorizontal: 20,
+                    marginTop: 8,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Bold',
+                      fontSize: 32,
+                      color: '#00035c',
+                    }}>
+                    {day}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 12,
+                      color: '#b7b7b7',
+                      alignSelf: 'flex-end',
+                    }}>
+                    {month.substring(0, 3)}
+                    {' | '}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 12,
+                      color: '#b7b7b7',
+                      alignSelf: 'flex-end',
+                    }}>
+                    {weekday.substring(0, 3)}
                   </Text>
                 </View>
-                <View style={{position: 'absolute', bottom: 0}}>
-                  <Text style={styles.homeScreenCardTextTwo}>
-                    Sports & Fitness
+              )}
+              <TouchableOpacity
+                // disabled
+                onPress={() => {
+                  navigation.navigate('eventDetails', {data: product});
+                }}
+                style={{alignItems: 'center'}}>
+                <Card style={[searchEventsDetailshomeScreenCard]}>
+                  <ImageBackground
+                    style={[searchDetailshomeScreenCardImage]}
+                    source={{uri: product.event_image}}
+                    resizeMode="cover">
+                    {product.number > 1 && (
+                      <View style={styles.communityDetailshomeScreenCardView}>
+                        {/* <ImageView  src={Images.public}  imageStyle={{width:15,height:15}}  /> */}
+                        <Text style={styles.communityDetailsCardImageText}>
+                          {product.number - 1}
+                        </Text>
+                        <Text style={styles.communityDetailsCardImageTextTwo}>
+                          attendees
+                        </Text>
+                      </View>
+                    )}
+                    <View style={styles.comhomeScreenCardView}>
+                      <Text style={styles.sportscommunityPublicText}>
+                        {product.event_category}
+                      </Text>
+                    </View>
+                  </ImageBackground>
+                </Card>
+                <View style={{width: '100%'}}>
+                  <Text style={[styles.communityDetailsCardImageDateText]}>
+                    {weekday}
+                    {','} {month} {day} {product.event_start_time}
+                  </Text>
+                  <Text style={styles.communityDetailsCardDetailsText}>
+                    {product.event_name}
                   </Text>
                 </View>
-              </ImageBackground>
-            </Card>
-            <View style={{width: '100%'}}>
-              <Text style={styles.communityDetailsCardImageDateText}>
-                Sat, Aug 28 12:00 PM
-              </Text>
-              <Text style={styles.communityDetailsCardDetailsText}>
-                Using AI to Understand Search Intent by eBay applied researcher,
-                Aritra Mandal
-              </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-      ))}
+          )
+        );
+      // );
+    })}
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text,ImageBackground,TouchableOpacity,StyleSheet,ScrollView } from 'react-native'
+import { View, Text,ImageBackground,TouchableOpacity,StyleSheet,ScrollView, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import ImageView from '../../components/Image';
 import { Images } from '../../utils'
@@ -10,13 +10,16 @@ export default function TermsAndConditions() {
         <View>
      <ScrollView>
              <ImageBackground source={Images.profileMainImage} style={styles.profileImageContainer} resizeMode="cover" >
-            <View style={styles.settingTopButtonsContainer}>
+             <View style={styles.settingTopButtonsContainer}>
             <View style={styles.settingTopButtons}>
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <ImageView  src={Images.left_arrow} imageStyle={styles.profileTopBackImage} />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <ImageView
+                  src={Images.left_arrow}
+                  imageStyle={styles.profileTopBackImageTwo}
+                />
+              </TouchableOpacity>
             </View>
-                </View>
+          </View>
             </ImageBackground>
             <View style={{paddingHorizontal:20}}>
                 <Text style={{color:'#00035c',fontFamily:'Poppins-Bold',fontSize:38}}>T&C</Text>
@@ -25,7 +28,7 @@ export default function TermsAndConditions() {
       width: 0,
       height: 3,
   },
-  shadowOpacity: 0.29,
+  shadowOpacity: Platform.OS === 'ios' ? 0.10: 0.29,
   shadowRadius: 4.65,
   
   elevation: 7, shadowColor: "#000",marginHorizontal:20,marginVertical:10,paddingVertical:20,paddingHorizontal:5}}>

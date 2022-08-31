@@ -1,7 +1,11 @@
 export default function(state={},action){
     switch(action.type){
-          case 'loginUser':
-                 return {...state,id:action.id,first_name:action.first_name,last_name:action.last_name,email:action.email,bio:action.bio,role_id:action.role_id};
+          case 'SignUp':
+                 return {...state,data:action.id,email:action.email,first_name:action.first_name,last_name:action.last_name,profile_image:action.profile_image,bio:action.bio,loading:true};
+          case 'SignIn':
+                     return {...state,id:action.id,email:action.email,first_name:action.first_name,last_name:action.last_name,profile_image:action.profile_image,bio:action.bio,notification:action.notification,timestamp:action.timestamp,loading:true};
+          case 'EditProfile':
+                     return {...state,id:action.id,email:action.email,first_name:action.first_name,last_name:action.last_name,profile_image:action.profile_image,bio:action.bio};
           default:
                   return state;
  

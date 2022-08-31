@@ -29,11 +29,12 @@ const TextInputWithIcon =(
     ref
   ) => (
     <View style={[inputStyle]}>
-        <ImageView src={require('../../images/line.png')} imageStyle={{width:5,height:20,marginLeft:0,alignSelf:'center'}} />
+        {/* <ImageView src={require('../../images/line.png')} imageStyle={{width:5,height:20,marginLeft:0,alignSelf:'center'}} /> */}
       <TextInput
         style={[
           textStyle,
         ]}
+        selectionColor={'black'}
         onChangeText={onPress}
         value={value}
         autoCorrect={false}
